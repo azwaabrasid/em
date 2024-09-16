@@ -24,7 +24,6 @@ import syncStatusStore from '../stores/syncStatus'
 import { updateSize } from '../stores/viewport'
 import isRoot from '../util/isRoot'
 import pathToContext from '../util/pathToContext'
-import emulatePositionFixed from './emulatePositionFixed'
 import equalPath from './equalPath'
 
 declare global {
@@ -342,8 +341,6 @@ const initEvents = (store: Store<State, any>) => {
   // https://github.com/cybersemics/em/issues/1030
   lifecycle.addEventListener('statechange', onStateChange)
 
-  const emulatePositionFixedUnsubscribe = emulatePositionFixed()
-
   /** Remove window event handlers. */
   const cleanup = ({ keyDown, keyUp } = window.__inputHandlers || {}) => {
     document.removeEventListener('selectionchange', onSelectionChange)
@@ -360,7 +357,6 @@ const initEvents = (store: Store<State, any>) => {
     window.removeEventListener('drop', drop)
     lifecycle.removeEventListener('statechange', onStateChange)
     resizeHost.removeEventListener('resize', updateSize)
-    emulatePositionFixedUnsubscribe()
   }
 
   // return input handlers as another way to remove them on cleanup
